@@ -1,0 +1,100 @@
+
+version: 2
+
+models:
+  - name: stg_enrollment
+    description: Cleaned healthcare enrollment records.
+
+    columns:
+      - name: member_id
+        description: Healthcare member identifier.
+        data_tests:
+          - not_null
+
+      - name: date_of_birth
+        description: Member birth date converted to DATE.
+        data_tests:
+          - not_null
+
+      - name: effective_date
+        description: Enrollment coverage start date.
+        data_tests:
+          - not_null
+
+      - name: end_date
+        description: Enrollment coverage end date.
+        data_tests:
+          - not_null
+
+  - name: stg_medical_claims
+    description: Cleaned medical claims with standardized service dates and preserved line identifiers.
+
+    columns:
+      - name: claim_id
+        data_tests:
+          - not_null
+
+      - name: line_number
+        data_tests:
+          - not_null
+
+      - name: member_id
+        data_tests:
+          - not_null
+
+      - name: date_of_first_service
+        data_tests:
+          - not_null
+
+      - name: date_of_last_service
+        data_tests:
+          - not_null
+
+  - name: stg_pharmacy_claims
+    description: Cleaned pharmacy claims with payment-date quality flag.
+
+    columns:
+      - name: claim_id
+        data_tests:
+          - not_null
+
+      - name: member_id
+        data_tests:
+          - not_null
+
+      - name: date_of_service
+        data_tests:
+          - not_null
+
+      - name: date_paid
+        data_tests:
+          - not_null
+
+      - name: rx_refill_number
+        data_tests:
+          - not_null
+
+      - name: payment_before_service_flag
+        description: Flags claims paid before their service date.
+        data_tests:
+          - not_null
+
+  - name: stg_providers
+    description: Deduplicated provider-supplier relationships.
+
+    columns:
+      - name: provider_id
+        data_tests:
+          - not_null
+
+      - name: provider_name
+        data_tests:
+          - not_null
+
+      - name: provider_npi_number
+        data_tests:
+          - not_null
+
+      - name: supplier_name
+        data_tests:
+          - not_null

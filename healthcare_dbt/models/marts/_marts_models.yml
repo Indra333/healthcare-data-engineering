@@ -1,0 +1,110 @@
+
+version: 2
+
+models:
+  - name: dim_member
+    description: "Member dimension with one row per unique member."
+
+    columns:
+      - name: member_id
+        description: "Unique identifier for each member."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: member_first_name
+        data_tests:
+          - not_null
+
+      - name: member_last_name
+        data_tests:
+          - not_null
+
+      - name: date_of_birth
+        description: "Member date of birth; NULL for the Unknown Member."
+
+      - name: gender
+        data_tests:
+          - not_null
+
+  - name: dim_provider
+    description: "Provider dimension with one row per unique provider."
+
+    columns:
+      - name: provider_id
+        description: "Unique identifier for each provider."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: provider_name
+        data_tests:
+          - not_null
+
+      - name: provider_npi_number
+        data_tests:
+          - not_null
+
+  - name: fct_medical_claims
+    description: "Medical claims fact table at claim-line grain."
+
+    columns:
+      - name: claim_id
+        data_tests:
+          - not_null
+
+      - name: line_number
+        data_tests:
+          - not_null
+
+      - name: member_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_member')
+                field: member_id
+
+      - name: provider_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_provider')
+                field: provider_id
+
+      - name: allowed_amount
+        description: "Allowed amount for the medical claim line."
+
+  - name: fct_pharmacy_claims
+    description: "One row per unique pharmacy claim, retaining the latest payment-date version."
+
+    columns:
+      - name: claim_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: source_member_id
+        data_tests:
+          - not_null
+
+      - name: member_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_member')
+                field: member_id
+
+      - name: date_of_service
+        data_tests:
+          - not_null
+
+      - name: date_paid
+        data_tests:
+          - not_null
+
+      - name: payment_before_service_flag
+        data_tests:
+          - not_null

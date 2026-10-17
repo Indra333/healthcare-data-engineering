@@ -1,0 +1,14 @@
+
+version: 2
+
+sources:
+  - name: healthcare_raw
+    database: HEALTHCARE_DB
+    schema: RAW
+    description: Raw healthcare data ingested from AWS S3.
+
+    tables:
+      - name: ENROLLMENT
+      - name: MEDICAL_CLAIMS
+      - name: PHARMACY_CLAIMS
+      - name: PROVIDERS
